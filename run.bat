@@ -1,0 +1,1 @@
+@docker run --rm -i -t -v %cd%/1min:/etc/periodic/1min:ro --name unifi-wifi-controller unifi-wifi-controller
