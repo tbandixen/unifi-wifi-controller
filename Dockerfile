@@ -14,9 +14,7 @@ RUN mkdir -p /usr/local/share/wifi-state-controller && \
 # COPY /scripts/* /
 COPY /ssh-keys/* /root/.ssh/
 
-RUN chmod -R 0600 /root/.ssh && \
-        ssh-keyscan -H unifi-ap.bx.home >> ~/.ssh/known_hosts && \
-        ssh-keyscan -H unifi-ap-ac-lite.bx.home >> ~/.ssh/known_hosts
+RUN chmod -R 0600 /root/.ssh
 
 # RUN ssh-keygen -b 4096 -t rsa -f /root/.ssh/id_rsa -q -N ""
 
