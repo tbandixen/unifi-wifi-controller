@@ -7,14 +7,14 @@ NEW_STATE=$(curl -s https://wifistateservice.azurewebsites.net/state)
 
 if [ "$LAST_STATE" != "$NEW_STATE" ]; then
     if [ "$NEW_STATE" == "1" ]; then
-        ssh -i ~/.ssh/id_rsa -StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 up
-        ssh -i ~/.ssh/id_rsa -StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 up
-        ssh -i ~/.ssh/id_rsa -StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 up
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 up
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 up
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 up
         echo -e "$(date +"%Y-%m-%dT%H:%M:%S.%n%Z")\tturned on wifi"
     else
-        ssh -i ~/.ssh/id_rsa -StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 down
-        ssh -i ~/.ssh/id_rsa -StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 down
-        ssh -i ~/.ssh/id_rsa -StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 down
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 down
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 down
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 down
         echo -e "$(date +"%Y-%m-%dT%H:%M:%S.%n%Z")\tturned off wifi"
     fi
     echo "$NEW_STATE" > "$vardir/LAST_STATE"
