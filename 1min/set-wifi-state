@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+vardir=/usr/local/share/wifi-state-controller
+LAST_STATE=$(cat $vardir/LAST_STATE)
+
+NEW_STATE=$(curl -s https://wifistateservice.azurewebsites.net/state)
+
+if [ "$LAST_STATE" != "$NEW_STATE" ]; then
+    if [ "$NEW_STATE" == "1" ]; then
+        ssh -i ~/.ssh/id_rsa tbx@unifi-ap.bx.home ifconfig wifi0 up
+        ssh -i ~/.ssh/id_rsa tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 up
+        ssh -i ~/.ssh/id_rsa tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 up
+        echo "turned on wifi"
+    else
+        ssh -i ~/.ssh/id_rsa tbx@unifi-ap.bx.home ifconfig wifi0 down
+        ssh -i ~/.ssh/id_rsa tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 down
+        ssh -i ~/.ssh/id_rsa tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 down
+        echo "turned off wifi"
+    fi
+    echo "$NEW_STATE" > "$vardir/LAST_STATE"
+fi

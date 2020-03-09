@@ -1,0 +1,1 @@
+@docker exec -it unifi-wifi-controller sh
