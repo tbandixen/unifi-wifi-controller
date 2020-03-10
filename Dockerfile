@@ -8,7 +8,7 @@ RUN apk --no-cache add --update \
 
 RUN mkdir -p /usr/local/share/wifi-state-controller && \
         mkdir -p /etc/periodic/1min && \
-        echo "0" > /usr/local/share/wifi-state-controller/LAST_STATE && \
+        echo "2" > /usr/local/share/wifi-state-controller/LAST_STATE && \
         echo -e "*       *       *       *       *       run-parts /etc/periodic/1min\n" >> /etc/crontabs/root
 
 COPY /ssh-keys/* /root/.ssh/
