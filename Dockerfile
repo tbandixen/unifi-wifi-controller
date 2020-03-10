@@ -11,15 +11,10 @@ RUN mkdir -p /usr/local/share/wifi-state-controller && \
         echo "0" > /usr/local/share/wifi-state-controller/LAST_STATE && \
         echo -e "*       *       *       *       *       run-parts /etc/periodic/1min\n" >> /etc/crontabs/root
 
-# COPY /scripts/* /
 COPY /ssh-keys/* /root/.ssh/
-
 RUN chmod -R 0600 /root/.ssh
 
-# RUN ssh-keygen -b 4096 -t rsa -f /root/.ssh/id_rsa -q -N ""
-
 COPY /1min/* /etc/periodic/1min/
+RUN chmod -R +x /etc/periodic/1min/
 
 CMD ["crond", "-f", "-l", "8"]
-# ENTRYPOINT ["/docker-entry.sh"]
-# CMD ["/docker-cmd.sh"]
