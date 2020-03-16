@@ -17,6 +17,7 @@ RUN mkdir -p /usr/local/share/wifi-state-controller && \
 
 RUN echo "2" > /usr/local/share/wifi-state-controller/LAST_STATE && \
         echo -e "*       *       *       *       *       run-parts /etc/periodic/1min\n" >> /etc/crontabs/root && \
-        echo -e "59       18       *       *       *       /usr/local/share/wifi-state-controller/disable.sh\n" >> /etc/crontabs/root
+        echo -e "0       19       *       *       *       /usr/local/share/wifi-state-controller/endisable.sh 0\n" >> /etc/crontabs/root
+        echo -e "0       7       *       *       *       /usr/local/share/wifi-state-controller/endisable.sh 1\n" >> /etc/crontabs/root
 
 CMD ["crond", "-f", "-l", "8"]
