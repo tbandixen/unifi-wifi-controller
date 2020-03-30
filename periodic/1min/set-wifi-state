@@ -29,7 +29,7 @@ if [ "$LAST_STATE" != "$NEW_STATE" ]; then
                 ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER $host ifconfig $interface up
                 echo "WiFi turned on for $interface@$host"
             else
-                ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi1 down
+                ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER $host ifconfig $interface down
                 echo "WiFi turned off for $interface@$host"
             fi
             echo "$NEW_STATE" > "$vardir/LAST_STATE"
