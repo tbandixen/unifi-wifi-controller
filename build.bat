@@ -1,1 +1,3 @@
-@docker build . -t unifi-wifi-controller:latest
+@echo off
+docker build . -t unifi-wifi-controller:latest
+IF ERRORLEVEL 1 PAUSE
