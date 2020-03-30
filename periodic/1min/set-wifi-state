@@ -6,16 +6,37 @@ LAST_STATE=$(cat $vardir/LAST_STATE)
 NEW_STATE=$(curl -s $API_URL)
 
 if [ "$LAST_STATE" != "$NEW_STATE" ]; then
-    if [ "$NEW_STATE" == "1" ]; then
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap.bx.home ifconfig wifi0 up
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi0 up
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi1 up
-        echo "WiFi turned on"
-    else
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap.bx.home ifconfig wifi0 down
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi0 down
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi1 down
-        echo "WiFi turned off"
-    fi
-    echo "$NEW_STATE" > "$vardir/LAST_STATE"
+    # INTERFACES = "<amount of hosts>;<host>;<host>"
+    # <host> = <amount of interfaces>;hostname;if1;if2
+    # --> "2;1,ap1.local,wifi0;2,ap2.local,wifi0,wifi1"
+    hosts_amount="$(echo $INTERFACES | cut -d';' -f1)"
+
+    h=2
+    while [ $h -le `expr $hosts_amount + 1` ]
+    do
+        host_str="$(echo $INTERFACES | cut -d';' -f$h)"
+
+        if_amount="$(echo $host_str | cut -d',' -f1)"
+
+        host="$(echo $host_str | cut -d',' -f2)"
+
+        i=3
+        while [ $i -le `expr $if_amount + 2` ]
+        do
+            interface=$(echo $host_str | cut -d',' -f$i)
+
+            if [ "$NEW_STATE" == "1" ]; then
+                ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER $host ifconfig $interface up
+                echo "WiFi turned on for $interface@$host"
+            else
+                ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi1 down
+                echo "WiFi turned off for $interface@$host"
+            fi
+            echo "$NEW_STATE" > "$vardir/LAST_STATE"
+
+            i=`expr $i + 1`
+        done
+
+        h=`expr $h + 1`
+    done
 fi

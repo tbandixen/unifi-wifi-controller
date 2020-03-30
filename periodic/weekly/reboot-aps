@@ -1,5 +1,21 @@
 #!/usr/bin/env sh
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap.bx.home reboot
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home reboot
-echo "Accesspoints rebooted"
+# INTERFACES = "<amount of hosts>;<host>;<host>"
+# <host> = <amount of interfaces>;hostname;if1;if2
+# --> "2;1,ap1.local,wifi0;2,ap2.local,wifi0,wifi1"
+hosts_amount="$(echo $INTERFACES | cut -d';' -f1)"
+
+h=2
+while [ $h -le `expr $hosts_amount + 1` ]
+do
+    host_str="$(echo $INTERFACES | cut -d';' -f$h)"
+
+    if_amount="$(echo $host_str | cut -d',' -f1)"
+
+    host="$(echo $host_str | cut -d',' -f2)"
+
+    ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER $host reboot
+    echo "Accesspoints rebooted on $host"
+
+    h=`expr $h + 1`
+done
