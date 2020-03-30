@@ -1,6 +1,8 @@
 FROM alpine:latest
 MAINTAINER thomas@bandixen.ch
 
+ENV API_URL=https://www.google.com/ SSH_USER=root
+
 RUN apk --no-cache add --update \
         openssh-client \
         curl

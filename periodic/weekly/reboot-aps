@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home reboot
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home reboot
+ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap.bx.home reboot
+ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home reboot
 echo "Accesspoints rebooted"

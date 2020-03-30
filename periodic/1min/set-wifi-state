@@ -3,18 +3,18 @@
 vardir=/usr/local/share/wifi-state-controller
 LAST_STATE=$(cat $vardir/LAST_STATE)
 
-NEW_STATE=$(curl -s https://wifistateservice.azurewebsites.net/state)
+NEW_STATE=$(curl -s $API_URL)
 
 if [ "$LAST_STATE" != "$NEW_STATE" ]; then
     if [ "$NEW_STATE" == "1" ]; then
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 up
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 up
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 up
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap.bx.home ifconfig wifi0 up
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi0 up
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi1 up
         echo "WiFi turned on"
     else
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 down
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 down
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 down
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap.bx.home ifconfig wifi0 down
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi0 down
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new -l $SSH_USER unifi-ap-ac-lite.bx.home ifconfig wifi1 down
         echo "WiFi turned off"
     fi
     echo "$NEW_STATE" > "$vardir/LAST_STATE"
