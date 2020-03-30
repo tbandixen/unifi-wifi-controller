@@ -6,8 +6,8 @@ RUN apk --no-cache add --update \
         curl
 #        wget
 
-COPY /ssh-keys/* /root/.ssh/
-COPY /periodic/* /etc/periodic/
+COPY /ssh-keys/ /root/.ssh/
+COPY /periodic/ /etc/periodic/
 # COPY /nightly/endisable.sh /usr/local/share/wifi-state-controller/endisable.sh
 
 RUN mkdir -p /usr/local/share/wifi-state-controller && \
