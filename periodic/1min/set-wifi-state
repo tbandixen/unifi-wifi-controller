@@ -10,12 +10,12 @@ if [ "$LAST_STATE" != "$NEW_STATE" ]; then
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 up
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 up
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 up
-        echo "Turned WiFi ON"
+        echo "WiFi turned on"
     else
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home ifconfig wifi0 down
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi0 down
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home ifconfig wifi1 down
-        echo "Turned WiFi OFF"
+        echo "WiFi turned off"
     fi
     echo "$NEW_STATE" > "$vardir/LAST_STATE"
 fi

@@ -2,3 +2,4 @@
 
 ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap.bx.home reboot
 ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=accept-new tbx@unifi-ap-ac-lite.bx.home reboot
+echo "Accesspoints rebooted"
